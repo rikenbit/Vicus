@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/614626969.svg)](https://zenodo.org/badge/latestdoi/614626969)
+[![DOI](https://zenodo.org/badge/617712827.svg)](https://zenodo.org/badge/latestdoi/617712827)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/Vicus)](
 https://cran.r-project.org/package=Vicus)
 [![Downloads](https://cranlogs.r-pkg.org/badges/Vicus)](https://CRAN.R-project.org/package=Vicus)

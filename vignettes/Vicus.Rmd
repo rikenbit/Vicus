@@ -1,0 +1,116 @@
+---
+title: "Vicus: Exploiting local structures to improve network-based analysis of biological data"
+author:
+- name: Koki Tsuyuzaki
+  affiliation: Laboratory for Bioinformatics Research,
+    RIKEN Center for Biosystems Dynamics Research
+  email: k.t.the-answer@hotmail.co.jp
+date: "`r Sys.Date()`"
+bibliography: bibliography.bib
+package: guidedPLS
+output: rmarkdown::html_vignette
+vignette: |
+  %\VignetteIndexEntry{Vicus: Exploiting local structures to improve network-based analysis of biological data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+In this vignette, we consider a novel graph embedding method, Vicus [@vicus].
+
+Here, we use the Swiss roll data, which is a well known toy model.
+
+```{r data, echo=TRUE}
+set.seed(1)
+N <- 300
+p <- sqrt(2 + 2 * seq(-1, 1 - 2 / N, 2 / N))
+y <- 2 * runif(N, -1, 1)
+X <- cbind(p * cos(2 * pi * p), y, p * sin(2 * pi * p))
+X <- scale(X, center=TRUE, scale=TRUE) * 3
+labelX <- c(rep(1:11, each = floor(N / 11)), rep(11, length=3))
+```
+
+```{r data2, echo=TRUE, fig.height=4, fig.width=4}
+library("scatterplot3d")
+
+# Color Setting
+colors <- labelX
+cols <- c("#9E0142", "#D53E4F", "#F46D43", "#FDAE61",
+    "#FEE08B", "#FFFFBF", "#E6F598", "#ABDDA4",
+    "#66C2A5", "#3288BD", "#5E4FA2")
+for(i in seq_along(cols)){
+    colors[which(colors == i)] <- cols[i]
+}
+
+par(cex = 1.2)
+scatterplot3d(X, color=colors, pch=16, main="Original Data", angle=40)
+```
+
+# 2D Embedding
+
+The `Vicus` package provides three types of graph embedding algorithms: `Vicus`, Laplacian Eigenmaps (`LEM`), and Hessian Locally Linear Embedding (`HLLE`).
+
+First, the `graphMatrix` function computes a matrix containing graph information for each algorithm:
+
+```{r graph_matrix_2d, echo=TRUE}
+library("Vicus")
+
+objVicus <- graphMatrix(X, algorithm="Vicus", ndim=2, K=10)
+objLEM <- graphMatrix(X, algorithm="LEM", ndim=2, K=10)
+objHLLE <- graphMatrix(X, algorithm="HLLE", ndim=2, K=5)
+str(objVicus, 2)
+str(objLEM, 2)
+str(objHLLE, 2)
+```
+
+Next, the `embedding` function performs eigenvalue decomposition and estimates the low-dimensional coordinates.
+
+```{r embed_2d, echo=TRUE}
+outVicus <- embedding(objVicus)
+outLEM <- embedding(objLEM)
+outHLLE <- embedding(objHLLE)
+```
+
+The low dimensional coordinates show that Vicus is better able to capture the local structure of the Swiss roll data.
+
+```{r plot_2d, echo=TRUE, fig.height=3, fig.width=8}
+layout(t(1:3))
+plot(outVicus, col=colors, pch=16, main="Vicus", cex=2)
+plot(outLEM, col=colors, pch=16, main="LEM", cex=2)
+plot(outHLLE, col=colors, pch=16, main="HLLE", cex=2)
+```
+
+# 3D Embedding
+
+It can also be embedded to any dimension by simply changing the value of `ndim` as follows:
+
+```{r graph_matrix_3d, echo=TRUE}
+objVicus_3D <- graphMatrix(X, algorithm="Vicus", ndim=3)
+objLEM_3D <- graphMatrix(X, algorithm="LEM", ndim=3)
+objHLLE_3D <- graphMatrix(X, algorithm="HLLE", ndim=3)
+```
+
+The following step is the same as in 2D Embedding case above.
+
+```{r embed_3d, echo=TRUE}
+outVicus_3D <- embedding(objVicus_3D)
+outLEM_3D <- embedding(objLEM_3D)
+outHLLE_3D <- embedding(objHLLE_3D)
+```
+
+```{r plot_3d, echo=TRUE, fig.height=7, fig.width=7}
+layout(cbind(1:2, 3:4))
+scatterplot3d(X, color=colors, pch=16, main="Original Data", angle=40)
+scatterplot3d(outVicus_3D, color=colors, pch=16, main="Vicus", angle=40)
+scatterplot3d(outLEM_3D, color=colors, pch=16, main="LEM", angle=70)
+scatterplot3d(outHLLE_3D, color=colors, pch=16, main="HLLE", angle=70)
+```
+
+# Session Information {.unnumbered}
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+
+# References

@@ -1,0 +1,11 @@
+importFrom(methods, as)
+importFrom(utils, combn)
+importFrom(RANN, nn2)
+importFrom(Matrix, crossprod, tcrossprod, spMatrix)
+importClassesFrom(Matrix, dgCMatrix)
+importFrom(RSpectra, eigs_sym)
+
+export(
+    graphMatrix,
+    embedding
+)

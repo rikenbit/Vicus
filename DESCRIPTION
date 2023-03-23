@@ -17,7 +17,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-Description: Compared with the similar graph embedding method such as Laplacian Eigenmaps, Vicus can exploit more local structures of graph data. For the details of the methods, see the reference section of GitHub README.md <https://github.com/rikenbit/Vicus>.
+Description: Compared with the similar graph embedding method such as Laplacian Eigenmaps, 'Vicus' can exploit more local structures of graph data. For the details of the methods, see the reference section of 'GitHub' README.md <https://github.com/rikenbit/Vicus>.
 License: MIT + file LICENSE
 URL: https://github.com/rikenbit/Vicus
 VignetteBuilder: knitr

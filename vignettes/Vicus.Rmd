@@ -43,6 +43,7 @@ for(i in seq_along(cols)){
     colors[which(colors == i)] <- cols[i]
 }
 
+oldpar <- par("cex")
 par(cex = 1.2)
 scatterplot3d(X, color=colors, pch=16, main="Original Data", angle=40)
 ```
@@ -105,6 +106,10 @@ scatterplot3d(X, color=colors, pch=16, main="Original Data", angle=40)
 scatterplot3d(outVicus_3D, color=colors, pch=16, main="Vicus", angle=40)
 scatterplot3d(outLEM_3D, color=colors, pch=16, main="LEM", angle=70)
 scatterplot3d(outHLLE_3D, color=colors, pch=16, main="HLLE", angle=70)
+```
+
+```{r setting, echo=TRUE}
+par(cex = oldpar)
 ```
 
 # Session Information {.unnumbered}
